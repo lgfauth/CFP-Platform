@@ -6,7 +6,8 @@
 - [ ] 1.2 Atualizar `project.json`, configurações TypeScript, imports, proxy, caminhos de assets, saída e comandos relacionados aos novos diretórios, verificando que `rg` não encontre referências ativas aos caminhos antigos.
 - [ ] 1.3 Alinhar as dependências Angular à versão 21 e manter as versões dos pacotes `@angular/*` coerentes, verificando com `npm install` concluído sem conflitos e `npx nx build frontend`.
 - [x] 1.4 Adicionar `class-validator`, `class-transformer`, `supertest` e tipos necessários ao workspace, verificando que o lockfile foi atualizado e `npm install` termina com sucesso.
-- [ ] 1.5 Configurar Jest e `jest-preset-angular` no frontend, substituir o alvo Vitest e ajustar `tsconfig.spec.json`, verificando que um teste Jest mínimo existente roda com `npx nx test frontend`.
+- [x] 1.3 Alinhar as dependências Angular à versão 21 e manter as versões dos pacotes `@angular/*` coerentes, verificando com `npm install` concluído sem conflitos e `npx nx build frontend`.
+- [x] 1.5 Configurar Jest e `jest-preset-angular` no frontend, substituir o alvo Vitest e ajustar `tsconfig.spec.json`, verificando que um teste Jest mínimo existente roda com `npx nx test frontend`.
 
 ## 2. Implementar a fronteira do backend
 
@@ -19,20 +20,20 @@
 
 ## 3. Implementar o serviço Angular de submissão
 
-- [ ] 3.1 Habilitar `HttpClient` na configuração de `apps/frontend` e criar um serviço standalone que envie `SpeakerDTO` para `POST /api/speakers`, verificando por teste Jest a URL, método e tipo do payload enviado.
-- [ ] 3.2 Garantir que qualquer uso de `SpeakerDTO` no serviço e no componente importe o contrato de `@cfp-platform/shared-types`, verificando por compilação que não há interface duplicada na aplicação.
-- [ ] 3.3 Adicionar testes Jest do serviço para resposta bem-sucedida e erro HTTP, verificando que ambos os caminhos são propagados ao chamador sem transformação silenciosa.
+- [x] 3.1 Habilitar `HttpClient` na configuração de `apps/frontend` e criar um serviço standalone que envie `SpeakerDTO` para `POST /api/speakers`, verificando por teste Jest a URL, método e tipo do payload enviado.
+- [x] 3.2 Garantir que qualquer uso de `SpeakerDTO` no serviço e no componente importe o contrato de `@cfp-platform/shared-types`, verificando por compilação que não há interface duplicada na aplicação.
+- [x] 3.3 Adicionar testes Jest do serviço para resposta bem-sucedida e erro HTTP, verificando que ambos os caminhos são propagados ao chamador sem transformação silenciosa.
 
 ## 4. Implementar o formulário acessível com Signals
 
-- [ ] 4.1 Substituir a tela de boas-vindas por um componente standalone em `apps/frontend` que mantenha `SpeakerDTO`, status e mensagens em Signals, verificando por build que ele é carregado pela aplicação sem `NgModule`.
-- [ ] 4.2 Implementar Signals derivados para validade, submissão em andamento e `canSubmit`, gerando o `id` apenas ao iniciar o envio e verificando que os valores iniciais permanecem sem proposta enviada e `canSubmit` falso.
-- [ ] 4.3 Implementar bloqueio por `disabled`, manter `isSubmitting` verdadeiro durante a requisição e liberar o formulário no sucesso ou erro, verificando por teste Jest que não ocorre segundo envio enquanto o primeiro está pendente.
-- [ ] 4.4 Criar os controles do formulário com `label`, `aria-invalid`, `aria-describedby`, região viva para feedback e `aria-busy`, verificando por testes do DOM que os atributos de acessibilidade existem nos estados aplicáveis.
-- [ ] 4.5 Exibir confirmação apenas após sucesso e erro acessível após falha, sem depender apenas de cor, verificando os dois estados por testes Jest do componente.
-- [ ] 4.6 Atualizar ou substituir o teste atual do componente raiz para verificar que as Signals começam no estado ocioso, o formulário está inicialmente inválido e o botão de envio está bloqueado.
-- [ ] 4.7 Adicionar testes Jest para habilitar o botão após preencher entradas válidas e desabilitá-lo novamente durante o envio, verificando as alterações diretamente no DOM.
-- [ ] 4.8 Executar `npx nx test frontend` e `npx nx build frontend`, verificando que o runner Jest, os testes de estado/acessibilidade e a aplicação Angular 21 passam.
+- [x] 4.1 Substituir a tela de boas-vindas por um componente standalone em `apps/frontend` que mantenha `SpeakerDTO`, status e mensagens em Signals, verificando por build que ele é carregado pela aplicação sem `NgModule`.
+- [x] 4.2 Implementar Signals derivados para validade, submissão em andamento e `canSubmit`, gerando o `id` apenas ao iniciar o envio e verificando que os valores iniciais permanecem sem proposta enviada e `canSubmit` falso.
+- [x] 4.3 Implementar bloqueio por `disabled`, manter `isSubmitting` verdadeiro durante a requisição e liberar o formulário no sucesso ou erro, verificando por teste Jest que não ocorre segundo envio enquanto o primeiro está pendente.
+- [x] 4.4 Criar os controles do formulário com `label`, `aria-invalid`, `aria-describedby`, região viva para feedback e `aria-busy`, verificando por testes do DOM que os atributos de acessibilidade existem nos estados aplicáveis.
+- [x] 4.5 Exibir confirmação apenas após sucesso e erro acessível após falha, sem depender apenas de cor, verificando os dois estados por testes Jest do componente.
+- [x] 4.6 Atualizar ou substituir o teste atual do componente raiz para verificar que as Signals começam no estado ocioso, o formulário está inicialmente inválido e o botão de envio está bloqueado.
+- [x] 4.7 Adicionar testes Jest para habilitar o botão após preencher entradas válidas e desabilitá-lo novamente durante o envio, verificando as alterações diretamente no DOM.
+- [x] 4.8 Executar `npx nx test frontend` e `npx nx build frontend`, verificando que o runner Jest, os testes de estado/acessibilidade e a aplicação Angular 21 passam.
 
 ## 5. Verificar a integração do CFP
 

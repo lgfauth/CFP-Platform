@@ -1,9 +1,9 @@
 {
   "name": "frontend",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "frontend/src",
+  "sourceRoot": "apps/frontend/src",
   "tags": [],
   "targets": {
     "build": {
@@ -14,16 +14,16 @@
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/frontend",
-        "browser": "frontend/src/main.ts",
-        "tsConfig": "frontend/tsconfig.app.json",
+        "browser": "apps/frontend/src/main.ts",
+        "tsConfig": "apps/frontend/tsconfig.app.json",
         "assets": [
           {
             "glob": "**/*",
-            "input": "frontend/public"
+            "input": "apps/frontend/public"
           }
         ],
         "styles": [
-          "frontend/src/styles.css"
+          "apps/frontend/src/styles.css"
         ]
       },
       "configurations": {
@@ -68,13 +68,16 @@
         "api:serve"
       ],
       "options": {
-        "proxyConfig": "frontend/proxy.conf.json"
+        "proxyConfig": "apps/frontend/proxy.conf.json"
       }
     },
     "test": {
-      "executor": "@angular/build:unit-test",
+      "executor": "nx:run-commands",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectName}"
+      ],
       "options": {
-        "watch": false
+        "command": "jest --config apps/frontend/jest.config.cts"
       }
     },
     "serve-static": {

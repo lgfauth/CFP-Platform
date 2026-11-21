@@ -1,0 +1,140 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  color: #172033;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.submission-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 2rem 1rem;
+  background:
+    radial-gradient(circle at top left, #dcecff 0, transparent 38rem),
+    #f6f8fb;
+}
+
+.submission-card {
+  width: min(100%, 42rem);
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid #dbe2ea;
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 1.5rem 4rem rgb(31 50 81 / 10%);
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #3158a4;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 3.25rem);
+  line-height: 1.05;
+}
+
+.introduction {
+  margin: 1rem 0 2rem;
+  color: #5b6473;
+  line-height: 1.6;
+}
+
+.submission-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+label {
+  font-weight: 700;
+}
+
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  border: 1px solid #9ca8b8;
+  border-radius: 0.55rem;
+  padding: 0.8rem 0.9rem;
+  font: inherit;
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 3px solid #4d7bd7;
+  outline-offset: 2px;
+}
+
+input[aria-invalid="true"] {
+  border-color: #b42318;
+}
+
+.field-error,
+.error-message {
+  color: #b42318;
+}
+
+.field-error {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.checkbox-field input {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+button {
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.65rem;
+  padding: 0.75rem 1rem;
+  background: #214fba;
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #a9b2c1;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.feedback-area:not(:empty) {
+  margin-top: 1rem;
+}
+
+.feedback-area p {
+  margin: 0;
+  border-radius: 0.55rem;
+  padding: 0.8rem 0.9rem;
+  font-weight: 700;
+}
+
+.success-message {
+  background: #eaf8ee;
+  color: #176b38;
+}
+
+.error-message {
+  background: #fff0ee;
+}
