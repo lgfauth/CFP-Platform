@@ -2,11 +2,10 @@
 
 ## 1. Migrar o workspace e preparar dependências
 
-- [ ] 1.1 Mover os aplicativos `frontend/` e `api/` para `apps/frontend/` e `apps/api/`, sem renomear os projetos Nx, e verificar com `nx show projects` que `frontend` e `api` continuam registrados.
-- [ ] 1.2 Atualizar `project.json`, configurações TypeScript, imports, proxy, caminhos de assets, saída e comandos relacionados aos novos diretórios, verificando que `rg` não encontre referências ativas aos caminhos antigos.
-- [ ] 1.3 Alinhar as dependências Angular à versão 21 e manter as versões dos pacotes `@angular/*` coerentes, verificando com `npm install` concluído sem conflitos e `npx nx build frontend`.
-- [x] 1.4 Adicionar `class-validator`, `class-transformer`, `supertest` e tipos necessários ao workspace, verificando que o lockfile foi atualizado e `npm install` termina com sucesso.
+- [x] 1.1 Mover os aplicativos `frontend/` e `api/` para `apps/frontend/` e `apps/api/`, sem renomear os projetos Nx, e verificar com `nx show projects` que `frontend` e `api` continuam registrados.
+- [x] 1.2 Atualizar `project.json`, configurações TypeScript, imports, proxy, caminhos de assets, saída e comandos relacionados aos novos diretórios, verificando que `rg` não encontre referências ativas aos caminhos antigos.
 - [x] 1.3 Alinhar as dependências Angular à versão 21 e manter as versões dos pacotes `@angular/*` coerentes, verificando com `npm install` concluído sem conflitos e `npx nx build frontend`.
+- [x] 1.4 Adicionar `class-validator`, `class-transformer`, `supertest` e tipos necessários ao workspace, verificando que o lockfile foi atualizado e `npm install` termina com sucesso.
 - [x] 1.5 Configurar Jest e `jest-preset-angular` no frontend, substituir o alvo Vitest e ajustar `tsconfig.spec.json`, verificando que um teste Jest mínimo existente roda com `npx nx test frontend`.
 
 ## 2. Implementar a fronteira do backend
@@ -37,8 +36,8 @@
 
 ## 5. Verificar a integração do CFP
 
-- [ ] 5.1 Executar `npx nx run-many --targets=test,build --projects=frontend,api,shared-types`, verificando que contrato, API e frontend compilam e seus testes passam em conjunto.
-- [ ] 5.2 Revisar todas as ocorrências de `SpeakerDTO`, `apps/frontend`, `apps/api` e os decorators do DTO, verificando que frontend e backend consomem o path alias compartilhado e que a validação não foi duplicada manualmente.
+- [x] 5.1 Executar `npx nx run-many --targets=test,build --projects=frontend,api,shared-types`, verificando que contrato, API e frontend compilam e seus testes passam em conjunto.
+- [x] 5.2 Revisar todas as ocorrências de `SpeakerDTO`, `apps/frontend`, `apps/api` e os decorators do DTO, verificando que frontend e backend consomem o path alias compartilhado e que a validação não foi duplicada manualmente.
 - [x] 5.3 Executar `openspec validate add-cfp-feature --strict`, verificando que os artefatos da mudança permanecem válidos após a implementação.
 
 ## Workflow follow-up

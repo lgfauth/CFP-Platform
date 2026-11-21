@@ -7,10 +7,11 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { API_GLOBAL_PREFIX, configureApp } from './app.config';
 import { AppModule } from './app/app.module';
+import { configureApp, GLOBAL_PREFIX } from './app/configure-app';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  configureApp(app);
+  const app = configureApp(await NestFactory.create(AppModule));
+  const globalPrefix = GLOBAL_PREFIX;
   const port = process.env.PORT || 3000;
   await app.listen(port);
   // Set when Nx waits for this server to be ready
