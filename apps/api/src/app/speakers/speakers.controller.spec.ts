@@ -42,6 +42,8 @@ describe('SpeakersController', () => {
       .send(validSpeaker)
       .expect(201)
       .expect(validSpeaker);
+
+    expect(submitSpy).toHaveBeenCalledWith(validSpeaker);
   });
 
   it.each(Object.keys(validSpeaker) as Array<keyof SpeakerDTO>)(
@@ -65,6 +67,9 @@ describe('SpeakersController', () => {
     ['an empty id', { ...validSpeaker, id: '' }],
     ['an empty name', { ...validSpeaker, name: '' }],
     ['an empty talk title', { ...validSpeaker, talkTitle: '' }],
+    ['a blank id', { ...validSpeaker, id: '   ' }],
+    ['a blank name', { ...validSpeaker, name: '   ' }],
+    ['a blank talk title', { ...validSpeaker, talkTitle: '   ' }],
     ['an id with the wrong type', { ...validSpeaker, id: 42 }],
     ['isGDE with the wrong type', { ...validSpeaker, isGDE: 'true' }],
     [

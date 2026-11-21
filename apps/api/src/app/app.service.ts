@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { SpeakerDTO } from '@cfp-platform/shared-types';
 
 @Injectable()
 export class AppService {
@@ -7,7 +6,4 @@ export class AppService {
     return { message: 'Hello API' };
   }
 
-  submitSpeaker(speaker: SpeakerDTO): SpeakerDTO {
-    return speaker;
-  }
 }
