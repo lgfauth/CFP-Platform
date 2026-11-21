@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.checkbox-field label {
+  font-weight: 700;
+}
+
+.checkbox-field input {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: var(--color-accent);
+}
+
+.checkbox-field input:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.feedback-area:not(:empty) {
+  margin-top: 1rem;
+}

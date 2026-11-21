@@ -5,7 +5,6 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { API_GLOBAL_PREFIX, configureApp } from './app.config';
 import { AppModule } from './app/app.module';
 import { configureApp, GLOBAL_PREFIX } from './app/configure-app';
 
@@ -24,9 +23,7 @@ async function bootstrap() {
       // @nx/js isn't installed
     }
   }
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${API_GLOBAL_PREFIX}`,
-  );
+  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
 }
 
 bootstrap();

@@ -1,4 +1,4 @@
-import type { SpeakerDTO } from '@cfp-platform/shared-types';
+import { SpeakerDTO } from '@cfp-platform/shared-types';
 import {
   IsBoolean,
   IsDefined,
@@ -10,7 +10,7 @@ import {
 
 const NON_WHITESPACE_TEXT = /\S/;
 
-export class CreateSpeakerDto implements SpeakerDTO {
+export class SpeakerSubmissionDto implements SpeakerDTO {
   @IsString()
   @IsNotEmpty()
   @Matches(NON_WHITESPACE_TEXT)
@@ -21,8 +21,6 @@ export class CreateSpeakerDto implements SpeakerDTO {
   @Matches(NON_WHITESPACE_TEXT)
   name!: string;
 
-  @IsString()
-  @IsNotEmpty()
   @IsEmail()
   email!: string;
 
