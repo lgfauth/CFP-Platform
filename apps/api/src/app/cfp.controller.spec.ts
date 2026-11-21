@@ -2,12 +2,12 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { SpeakerDTO } from '@cfp-platform/shared-types';
 import request from 'supertest';
-import { AppController } from './app.controller';
+import { CfpController } from './cfp.controller';
 import { AppModule } from './app.module';
 import { AppService } from './app.service';
 import { configureApp } from './configure-app';
 
-describe('AppController', () => {
+describe('CfpController', () => {
   let app: INestApplication;
   let service: AppService;
   let submitSpy: jest.SpyInstance;
@@ -20,33 +20,47 @@ describe('AppController', () => {
     isGDE: true,
   };
 
+  const secondSpeaker: SpeakerDTO = {
+    id: 'proposal-2',
+    name: 'Grace Hopper',
+    email: 'grace@example.com',
+    talkTitle: 'Compiladores e a arte de depurar',
+    isGDE: false,
+  };
+
   const postSpeaker = (payload: unknown) =>
     request(app.getHttpServer())
       .post('/api/speakers')
       .set('content-type', 'application/json')
       .send(JSON.stringify(payload));
 
-  beforeAll(async () => {
+  const listSpeakers = () => request(app.getHttpServer()).get('/api/speakers');
+
+  /** Each call yields a fresh application, equivalent to an API restart. */
+  async function createApp(): Promise<INestApplication> {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    app = configureApp(moduleRef.createNestApplication());
-    await app.init();
-    service = app.get(AppService);
-  });
+    const created = configureApp(moduleRef.createNestApplication());
+    await created.init();
+    return created;
+  }
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    app = await createApp();
+    service = app.get(AppService);
     submitSpy = jest.spyOn(service, 'submitSpeaker');
   });
 
-  afterEach(() => submitSpy.mockRestore());
-
-  afterAll(() => app.close());
+  afterEach(async () => {
+    submitSpy.mockRestore();
+    await app.close();
+  });
 
   describe('getData', () => {
     it('should return "Hello API"', () => {
-      expect(app.get(AppController).getData()).toEqual({ message: 'Hello API' });
+      expect(app.get(CfpController).getData()).toEqual({ message: 'Hello API' });
     });
   });
 
@@ -100,6 +114,53 @@ describe('AppController', () => {
 
       expect(response.status).toBe(400);
       expect(submitSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('GET /api/speakers', () => {
+    it('responds 200 with an empty array on a freshly created application', async () => {
+      const response = await listSpeakers();
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([]);
+    });
+
+    it('lists accepted submissions equal to the payloads, in submission order', async () => {
+      expect((await postSpeaker(validSpeaker)).status).toBe(201);
+      expect((await postSpeaker(secondSpeaker)).status).toBe(201);
+
+      const response = await listSpeakers();
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([validSpeaker, secondSpeaker]);
+    });
+
+    it('does not list a submission rejected with 400', async () => {
+      const rejected = { ...secondSpeaker, email: 'not-an-email' };
+
+      expect((await postSpeaker(validSpeaker)).status).toBe(201);
+      expect((await postSpeaker(rejected)).status).toBe(400);
+
+      const response = await listSpeakers();
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([validSpeaker]);
+      expect(response.body).not.toContainEqual(rejected);
+    });
+
+    it('lists an empty array after a restart (new application instance)', async () => {
+      expect((await postSpeaker(validSpeaker)).status).toBe(201);
+      expect((await listSpeakers()).body).toEqual([validSpeaker]);
+
+      await app.close();
+      app = await createApp();
+      service = app.get(AppService);
+      submitSpy = jest.spyOn(service, 'submitSpeaker');
+
+      const response = await listSpeakers();
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([]);
     });
   });
 });

@@ -1,17 +1,19 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { SpeakerDTO } from '@cfp-platform/shared-types';
 import { Subject, throwError } from 'rxjs';
-import { App } from './app';
-import { SpeakerSubmissionService } from './speaker-submission.service';
+import { CfpSubmissionComponent } from './cfp-submission';
+import { SpeakerSubmissionService } from '../speaker-submission.service';
 
-describe('App', () => {
+describe('CfpSubmissionComponent', () => {
   const submit = jest.fn();
 
   beforeEach(async () => {
     submit.mockReset();
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [CfpSubmissionComponent],
       providers: [
+        provideRouter([]),
         {
           provide: SpeakerSubmissionService,
           useValue: { submit },
@@ -42,7 +44,7 @@ describe('App', () => {
   }
 
   it('starts idle with an invalid form and a disabled submit button', async () => {
-    const fixture = TestBed.createComponent(App);
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
     await fixture.whenStable();
     const component = fixture.componentInstance;
     const button = fixture.nativeElement.querySelector(
@@ -63,7 +65,7 @@ describe('App', () => {
   });
 
   it('enables submission after valid values are entered', async () => {
-    const fixture = TestBed.createComponent(App);
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
     await fixture.whenStable();
     fillValidForm(fixture);
 
@@ -77,7 +79,7 @@ describe('App', () => {
   it('keeps the form locked and prevents a second submission while pending', async () => {
     const response = new Subject<SpeakerDTO>();
     submit.mockReturnValue(response.asObservable());
-    const fixture = TestBed.createComponent(App);
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
     await fixture.whenStable();
     fillValidForm(fixture);
 
@@ -116,7 +118,7 @@ describe('App', () => {
   it('announces confirmation only after a successful response', async () => {
     const response = new Subject<SpeakerDTO>();
     submit.mockReturnValue(response.asObservable());
-    const fixture = TestBed.createComponent(App);
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
     await fixture.whenStable();
     fillValidForm(fixture);
 
@@ -138,7 +140,7 @@ describe('App', () => {
 
   it('announces an accessible error and permits another attempt', async () => {
     submit.mockReturnValue(throwError(() => new Error('request failed')));
-    const fixture = TestBed.createComponent(App);
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
     await fixture.whenStable();
     fillValidForm(fixture);
 
@@ -157,8 +159,22 @@ describe('App', () => {
     expect(button.disabled).toBe(false);
   });
 
+  it('offers a labelled navigation link to the dashboard', async () => {
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
+    await fixture.whenStable();
+
+    const link = fixture.nativeElement.querySelector(
+      '.cfp-actions a'
+    ) as HTMLAnchorElement | null;
+
+    expect(link).not.toBeNull();
+    expect(link?.getAttribute('href')).toBe('/');
+    expect(link?.textContent?.trim()).toBe('Ver palestras submetidas');
+    expect(link?.classList).toContain('cfp-button-secondary');
+  });
+
   it('associates an invalid field error with its control', async () => {
-    const fixture = TestBed.createComponent(App);
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
     await fixture.whenStable();
     input(fixture, '#speaker-email', 'invalid-email');
 

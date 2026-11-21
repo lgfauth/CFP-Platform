@@ -1,3 +1,37 @@
+/*
+ * Design tokens — the only place where literal colors may appear.
+ * Contrast pairs are verified by `design-tokens.spec.ts`.
+ */
+:root {
+  /* Palette */
+  --color-ink: #4D4E49; /* cinza-escuro: texto, bordas de campos */
+  --color-accent: #9B574A; /* terracota: ação, foco, erro */
+  --color-sand: #CFB079; /* mostarda/areia: apenas decorativo */
+  --color-mist: #CAC6C3; /* cinza-claro: bordas, separadores */
+
+  /* Derived surfaces */
+  --color-surface: #FFFFFF;
+  --color-page: #EFEEED; /* cinza-claro 30% */
+  --color-sand-soft: #F3EBDE; /* mostarda 25% */
+  --color-accent-soft: #F5EEED; /* terracota 10% */
+
+  /* Shape */
+  --radius-card: 1.25rem;
+  --radius-control: 0.6rem;
+  --shadow-card: 0 1.5rem 4rem rgb(77 78 73 / 14%); /* derivada do cinza-escuro */
+
+  /* Typography */
+  --font-family-base:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
+  /* Layout */
+  --width-card: 42rem;
+  --width-card-wide: 64rem;
+  --height-header: 4rem;
+}
+
+/* Reset */
 * {
   box-sizing: border-box;
 }
@@ -9,5 +43,232 @@ body {
 }
 
 body {
-  background: #f6f8fb;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-family-base);
+}
+
+/* Main navigation (application shell) */
+.cfp-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  min-height: var(--height-header);
+  padding: 0.5rem clamp(1rem, 4vw, 2.5rem);
+  border-bottom: 1px solid var(--color-mist);
+  background: var(--color-surface);
+}
+
+.cfp-brand {
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cfp-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.cfp-nav a {
+  border-bottom: 3px solid transparent;
+  border-radius: var(--radius-control) var(--radius-control) 0 0;
+  padding: 0.6rem 0.85rem 0.45rem;
+  color: var(--color-ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cfp-nav a:hover {
+  background: var(--color-accent-soft);
+}
+
+.cfp-nav a:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Current page: marked by a thick underline, not only by color. */
+.cfp-nav a.is-active {
+  border-bottom-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* Page and card */
+.cfp-page {
+  display: grid;
+  min-height: calc(100vh - var(--height-header));
+  place-items: center;
+  padding: 2rem 1rem;
+  background:
+    radial-gradient(circle at top left, var(--color-sand-soft) 0, transparent 38rem),
+    var(--color-page);
+}
+
+.cfp-card {
+  position: relative;
+  overflow: hidden;
+  width: min(100%, var(--width-card));
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.cfp-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.375rem;
+  background: var(--color-sand);
+  content: "";
+}
+
+.cfp-card--wide {
+  width: min(100%, var(--width-card-wide));
+}
+
+.cfp-eyebrow {
+  margin: 0 0 0.5rem;
+  color: var(--color-accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cfp-title {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: clamp(2rem, 7vw, 3.25rem);
+  line-height: 1.05;
+}
+
+.cfp-lead {
+  margin: 1rem 0 2rem;
+  color: var(--color-ink);
+  line-height: 1.6;
+}
+
+.cfp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* Buttons (also applied to navigation links) */
+.cfp-button-primary,
+.cfp-button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-control);
+  padding: 0.75rem 1rem;
+  font: inherit;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cfp-button-primary {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
+.cfp-button-primary:hover:not(:disabled) {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+}
+
+.cfp-button-primary:disabled {
+  border-color: var(--color-mist);
+  background: var(--color-mist);
+  color: var(--color-ink);
+  cursor: not-allowed;
+}
+
+.cfp-button-secondary {
+  background: var(--color-surface);
+  color: var(--color-accent);
+}
+
+.cfp-button-secondary:hover {
+  background: var(--color-accent-soft);
+}
+
+.cfp-button-primary:focus-visible,
+.cfp-button-secondary:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Feedback messages (always paired with text and a live-region role) */
+.cfp-message {
+  margin: 0;
+  border-left: 4px solid;
+  border-radius: var(--radius-control);
+  padding: 0.8rem 0.9rem;
+  font-weight: 700;
+}
+
+.cfp-message-success {
+  border-left-color: var(--color-sand);
+  background: var(--color-sand-soft);
+  color: var(--color-ink);
+}
+
+.cfp-message-error {
+  border-left-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+/* Forms (shared by every form page) */
+.cfp-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.cfp-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.cfp-field label {
+  font-weight: 700;
+}
+
+.cfp-field input {
+  width: 100%;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-control);
+  padding: 0.8rem 0.9rem;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: inherit;
+}
+
+.cfp-field input:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.cfp-field input[aria-invalid="true"] {
+  border: 2px solid var(--color-accent);
+}
+
+.cfp-field-error {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.875rem;
 }

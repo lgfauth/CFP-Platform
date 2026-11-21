@@ -1,0 +1,139 @@
+<main class="cfp-page">
+  <section class="cfp-card cfp-card--wide" aria-labelledby="dashboard-title">
+    <p class="cfp-eyebrow">Call for Papers</p>
+    <h1 class="cfp-title" id="dashboard-title">Dashboard</h1>
+    <p class="cfp-lead">
+      Acompanhe as propostas enviadas ao Call for Papers e os eventos
+      cadastrados, na ordem em que foram recebidos.
+    </p>
+
+    <section
+      class="dashboard-section"
+      id="speakers-section"
+      aria-labelledby="speakers-title"
+    >
+      <h2 class="dashboard-section-title" id="speakers-title">
+        Palestras submetidas
+      </h2>
+
+      <div
+        class="dashboard-content"
+        [attr.aria-busy]="isLoading() ? 'true' : null"
+      >
+        @if (isLoading()) {
+          <p class="dashboard-status" role="status">Carregando palestras…</p>
+        } @else if (hasError()) {
+          <p class="cfp-message cfp-message-error" role="alert">
+            Não foi possível carregar as palestras. Tente novamente mais tarde.
+          </p>
+        } @else if (isEmpty()) {
+          <p class="dashboard-status" role="status">
+            Ainda não há palestras submetidas.
+          </p>
+        } @else {
+          <div
+            class="table-region"
+            role="region"
+            aria-labelledby="speakers-title"
+            tabindex="0"
+          >
+            <table>
+              <caption>
+                Propostas recebidas, com palestra, palestrante, email e
+                indicação GDE
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Palestra</th>
+                  <th scope="col">Palestrante</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">GDE</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (speaker of speakers(); track speaker.id) {
+                  <tr>
+                    <td class="cell-wrap">{{ speaker.talkTitle }}</td>
+                    <td>{{ speaker.name }}</td>
+                    <td class="cell-wrap">{{ speaker.email }}</td>
+                    <td>
+                      @if (speaker.isGDE) {
+                        <span class="gde-badge">Sim</span>
+                      } @else {
+                        Não
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section
+      class="dashboard-section"
+      id="events-section"
+      aria-labelledby="events-title"
+    >
+      <h2 class="dashboard-section-title" id="events-title">
+        Eventos cadastrados
+      </h2>
+
+      <div
+        class="dashboard-content"
+        [attr.aria-busy]="eventsLoading() ? 'true' : null"
+      >
+        @if (eventsLoading()) {
+          <p class="dashboard-status" role="status">Carregando eventos…</p>
+        } @else if (eventsError()) {
+          <p class="cfp-message cfp-message-error" role="alert">
+            Não foi possível carregar os eventos. Tente novamente mais tarde.
+          </p>
+        } @else if (eventsEmpty()) {
+          <p class="dashboard-status" role="status">
+            Ainda não há eventos cadastrados.
+          </p>
+        } @else {
+          <div
+            class="table-region"
+            role="region"
+            aria-labelledby="events-title"
+            tabindex="0"
+          >
+            <table>
+              <caption>
+                Eventos cadastrados, com nome, endereço e data
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Evento</th>
+                  <th scope="col">Endereço</th>
+                  <th scope="col">Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (event of events(); track event.id) {
+                  <tr>
+                    <td class="cell-wrap">{{ event.name }}</td>
+                    <td class="cell-wrap">{{ event.address }}</td>
+                    <td>
+                      <time [attr.datetime]="event.date">{{
+                        formatEventDate(event.date)
+                      }}</time>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </section>
+
+    <nav class="cfp-actions" aria-label="Navegação do Call for Papers">
+      <a class="cfp-button-secondary" routerLink="/palestras/nova">Enviar nova proposta</a>
+    </nav>
+  </section>
+</main>

@@ -1,19 +1,19 @@
-<main class="submission-page">
-  <section class="submission-card" aria-labelledby="submission-title">
-    <p class="eyebrow">Call for Papers</p>
-    <h1 id="submission-title">Proponha sua palestra</h1>
-    <p class="introduction">
+<main class="cfp-page">
+  <section class="cfp-card" aria-labelledby="submission-title">
+    <p class="cfp-eyebrow">Call for Papers</p>
+    <h1 class="cfp-title" id="submission-title">Proponha sua palestra</h1>
+    <p class="cfp-lead">
       Compartilhe sua experiência com a comunidade. Todos os campos de texto
       são obrigatórios.
     </p>
 
     <form
-      class="submission-form"
+      class="cfp-form"
       novalidate
       [attr.aria-busy]="isSubmitting()"
       (submit)="submit(); $event.preventDefault()"
     >
-      <div class="field">
+      <div class="cfp-field">
         <label for="speaker-name">Nome</label>
         <input
           id="speaker-name"
@@ -30,13 +30,13 @@
           (blur)="markTouched('name')"
         />
         @if (isFieldInvalid('name')) {
-          <p class="field-error" id="speaker-name-error">
+          <p class="cfp-field-error" id="speaker-name-error">
             {{ fieldError('name') }}
           </p>
         }
       </div>
 
-      <div class="field">
+      <div class="cfp-field">
         <label for="speaker-email">Email</label>
         <input
           id="speaker-email"
@@ -53,13 +53,13 @@
           (blur)="markTouched('email')"
         />
         @if (isFieldInvalid('email')) {
-          <p class="field-error" id="speaker-email-error">
+          <p class="cfp-field-error" id="speaker-email-error">
             {{ fieldError('email') }}
           </p>
         }
       </div>
 
-      <div class="field">
+      <div class="cfp-field">
         <label for="talk-title">Título da palestra</label>
         <input
           id="talk-title"
@@ -75,7 +75,7 @@
           (blur)="markTouched('talkTitle')"
         />
         @if (isFieldInvalid('talkTitle')) {
-          <p class="field-error" id="talk-title-error">
+          <p class="cfp-field-error" id="talk-title-error">
             {{ fieldError('talkTitle') }}
           </p>
         }
@@ -92,20 +92,20 @@
         <label for="speaker-is-gde">Sou Google Developer Expert (GDE)</label>
       </div>
 
-      <button type="submit" [disabled]="!canSubmit()">
+      <button class="cfp-button-primary" type="submit" [disabled]="!canSubmit()">
         {{ isSubmitting() ? 'Enviando...' : 'Enviar proposta' }}
       </button>
     </form>
 
     <div class="feedback-area" aria-atomic="true">
       @if (successMessage()) {
-        <p class="success-message" role="status" aria-live="polite">
+        <p class="cfp-message cfp-message-success" role="status" aria-live="polite">
           {{ successMessage() }}
         </p>
       }
       @if (errorMessage()) {
         <p
-          class="error-message"
+          class="cfp-message cfp-message-error"
           role="alert"
           aria-live="assertive"
           tabindex="-1"
@@ -114,5 +114,11 @@
         </p>
       }
     </div>
+
+    <nav class="cfp-actions" aria-label="Navegação do Call for Papers">
+      <a class="cfp-button-secondary" routerLink="/">
+        Ver palestras submetidas
+      </a>
+    </nav>
   </section>
 </main>

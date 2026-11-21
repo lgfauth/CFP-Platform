@@ -1,0 +1,108 @@
+<main class="cfp-page">
+  <section class="cfp-card" aria-labelledby="event-title">
+    <p class="cfp-eyebrow">Call for Papers</p>
+    <h1 class="cfp-title" id="event-title">Cadastre um evento</h1>
+    <p class="cfp-lead">
+      Informe os dados do evento. Todos os campos são obrigatórios e a data
+      deve ser a partir de amanhã.
+    </p>
+
+    <form
+      class="cfp-form"
+      novalidate
+      [attr.aria-busy]="isSubmitting()"
+      (submit)="submit(); $event.preventDefault()"
+    >
+      <div class="cfp-field">
+        <label for="event-name">Nome</label>
+        <input
+          id="event-name"
+          name="name"
+          type="text"
+          required
+          [value]="event().name"
+          [attr.aria-invalid]="isFieldInvalid('name') ? 'true' : null"
+          [attr.aria-describedby]="
+            isFieldInvalid('name') ? 'event-name-error' : null
+          "
+          (input)="update('name', $event)"
+          (blur)="markTouched('name')"
+        />
+        @if (isFieldInvalid('name')) {
+          <p class="cfp-field-error" id="event-name-error">
+            {{ fieldError('name') }}
+          </p>
+        }
+      </div>
+
+      <div class="cfp-field">
+        <label for="event-address">Endereço</label>
+        <input
+          id="event-address"
+          name="address"
+          type="text"
+          autocomplete="street-address"
+          required
+          [value]="event().address"
+          [attr.aria-invalid]="isFieldInvalid('address') ? 'true' : null"
+          [attr.aria-describedby]="
+            isFieldInvalid('address') ? 'event-address-error' : null
+          "
+          (input)="update('address', $event)"
+          (blur)="markTouched('address')"
+        />
+        @if (isFieldInvalid('address')) {
+          <p class="cfp-field-error" id="event-address-error">
+            {{ fieldError('address') }}
+          </p>
+        }
+      </div>
+
+      <div class="cfp-field">
+        <label for="event-date">Data</label>
+        <input
+          id="event-date"
+          name="date"
+          type="date"
+          required
+          [min]="minDate"
+          [value]="event().date"
+          [attr.aria-invalid]="isFieldInvalid('date') ? 'true' : null"
+          [attr.aria-describedby]="
+            isFieldInvalid('date') ? 'event-date-error' : null
+          "
+          (input)="update('date', $event)"
+          (change)="update('date', $event)"
+          (blur)="markTouched('date')"
+        />
+        @if (isFieldInvalid('date')) {
+          <p class="cfp-field-error" id="event-date-error">
+            {{ fieldError('date') }}
+          </p>
+        }
+      </div>
+
+      <button class="cfp-button-primary" type="submit" [disabled]="!canSubmit()">
+        {{ isSubmitting() ? 'Cadastrando...' : 'Cadastrar evento' }}
+      </button>
+    </form>
+
+    <div class="feedback-area" aria-atomic="true">
+      @if (successMessage()) {
+        <p class="cfp-message cfp-message-success" role="status" aria-live="polite">
+          {{ successMessage() }}
+        </p>
+      }
+      @if (errorMessage()) {
+        <p
+          class="cfp-message cfp-message-error"
+          role="alert"
+          aria-live="assertive"
+          tabindex="-1"
+        >
+          {{ errorMessage() }}
+        </p>
+      }
+    </div>
+  </section>
+</main>

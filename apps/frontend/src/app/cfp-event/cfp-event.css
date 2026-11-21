@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.feedback-area:not(:empty) {
+  margin-top: 1rem;
+}
