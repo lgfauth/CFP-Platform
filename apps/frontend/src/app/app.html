@@ -1,0 +1,118 @@
+<main class="submission-page">
+  <section class="submission-card" aria-labelledby="submission-title">
+    <p class="eyebrow">Call for Papers</p>
+    <h1 id="submission-title">Proponha sua palestra</h1>
+    <p class="introduction">
+      Compartilhe sua experiência com a comunidade. Todos os campos de texto
+      são obrigatórios.
+    </p>
+
+    <form
+      class="submission-form"
+      novalidate
+      [attr.aria-busy]="isSubmitting()"
+      (submit)="submit(); $event.preventDefault()"
+    >
+      <div class="field">
+        <label for="speaker-name">Nome</label>
+        <input
+          id="speaker-name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          required
+          [value]="speaker().name"
+          [attr.aria-invalid]="isFieldInvalid('name') ? 'true' : null"
+          [attr.aria-describedby]="
+            isFieldInvalid('name') ? 'speaker-name-error' : null
+          "
+          (input)="updateText('name', $event)"
+          (blur)="markTouched('name')"
+        />
+        @if (isFieldInvalid('name')) {
+          <p class="field-error" id="speaker-name-error">
+            {{ fieldError('name') }}
+          </p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="speaker-email">Email</label>
+        <input
+          id="speaker-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          [value]="speaker().email"
+          [attr.aria-invalid]="isFieldInvalid('email') ? 'true' : null"
+          [attr.aria-describedby]="
+            isFieldInvalid('email') ? 'speaker-email-error' : null
+          "
+          (input)="updateText('email', $event)"
+          (blur)="markTouched('email')"
+        />
+        @if (isFieldInvalid('email')) {
+          <p class="field-error" id="speaker-email-error">
+            {{ fieldError('email') }}
+          </p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="talk-title">Título da palestra</label>
+        <input
+          id="talk-title"
+          name="talkTitle"
+          type="text"
+          required
+          [value]="speaker().talkTitle"
+          [attr.aria-invalid]="isFieldInvalid('talkTitle') ? 'true' : null"
+          [attr.aria-describedby]="
+            isFieldInvalid('talkTitle') ? 'talk-title-error' : null
+          "
+          (input)="updateText('talkTitle', $event)"
+          (blur)="markTouched('talkTitle')"
+        />
+        @if (isFieldInvalid('talkTitle')) {
+          <p class="field-error" id="talk-title-error">
+            {{ fieldError('talkTitle') }}
+          </p>
+        }
+      </div>
+
+      <div class="checkbox-field">
+        <input
+          id="speaker-is-gde"
+          name="isGDE"
+          type="checkbox"
+          [checked]="speaker().isGDE"
+          (change)="updateIsGDE($event)"
+        />
+        <label for="speaker-is-gde">Sou Google Developer Expert (GDE)</label>
+      </div>
+
+      <button type="submit" [disabled]="!canSubmit()">
+        {{ isSubmitting() ? 'Enviando...' : 'Enviar proposta' }}
+      </button>
+    </form>
+
+    <div class="feedback-area" aria-atomic="true">
+      @if (successMessage()) {
+        <p class="success-message" role="status" aria-live="polite">
+          {{ successMessage() }}
+        </p>
+      }
+      @if (errorMessage()) {
+        <p
+          class="error-message"
+          role="alert"
+          aria-live="assertive"
+          tabindex="-1"
+        >
+          {{ errorMessage() }}
+        </p>
+      }
+    </div>
+  </section>
+</main>
