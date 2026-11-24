@@ -174,6 +174,52 @@ describe('CfpEventComponent', () => {
     expect(submitButton(fixture).disabled).toBe(true);
   });
 
+  function submitForm(fixture: ComponentFixture<CfpEventComponent>): void {
+    (fixture.nativeElement.querySelector('form') as HTMLFormElement).dispatchEvent(
+      new Event('submit', { cancelable: true })
+    );
+    fixture.detectChanges();
+  }
+
+  function errorText(
+    fixture: ComponentFixture<CfpEventComponent>,
+    id: string
+  ): string | undefined {
+    return fixture.nativeElement.querySelector(`#${id}`)?.textContent?.trim();
+  }
+
+  it('reveals every field error when an empty form is submitted', async () => {
+    const fixture = await render();
+
+    submitForm(fixture);
+
+    expect(errorText(fixture, 'event-name-error')).toBe('Informe o nome do evento.');
+    expect(errorText(fixture, 'event-address-error')).toBe(
+      'Informe o endereço do evento.'
+    );
+    expect(errorText(fixture, 'event-date-error')).toBe('Informe a data do evento.');
+    for (const selector of ['#event-name', '#event-address', '#event-date']) {
+      expect(control(fixture, selector).getAttribute('aria-invalid')).toBe('true');
+    }
+    expect(register).not.toHaveBeenCalled();
+  });
+
+  it('reveals only the date error when submitted with a past date', async () => {
+    const fixture = await render();
+    input(fixture, '#event-name', 'DevFest Sul');
+    input(fixture, '#event-address', 'Av. Ipiranga, 6681 - Porto Alegre');
+    input(fixture, '#event-date', '2020-01-01');
+
+    submitForm(fixture);
+
+    expect(fixture.nativeElement.querySelector('#event-name-error')).toBeNull();
+    expect(fixture.nativeElement.querySelector('#event-address-error')).toBeNull();
+    expect(errorText(fixture, 'event-date-error')).toBe(
+      'Escolha uma data a partir de amanhã.'
+    );
+    expect(register).not.toHaveBeenCalled();
+  });
+
   it('enables submission once every field is valid', async () => {
     const fixture = await render();
     fillValidForm(fixture);

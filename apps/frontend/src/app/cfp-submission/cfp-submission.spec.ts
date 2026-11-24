@@ -173,6 +173,60 @@ describe('CfpSubmissionComponent', () => {
     expect(link?.classList).toContain('cfp-button-secondary');
   });
 
+  function submitForm(fixture: ReturnType<TestBed['createComponent']>): void {
+    (fixture.nativeElement.querySelector('form') as HTMLFormElement).dispatchEvent(
+      new Event('submit', { cancelable: true })
+    );
+    fixture.detectChanges();
+  }
+
+  function errorText(
+    fixture: ReturnType<TestBed['createComponent']>,
+    id: string
+  ): string | undefined {
+    return fixture.nativeElement.querySelector(`#${id}`)?.textContent?.trim();
+  }
+
+  it('reveals every field error when an empty form is submitted', async () => {
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
+    await fixture.whenStable();
+
+    submitForm(fixture);
+
+    expect(errorText(fixture, 'speaker-name-error')).toBe('Informe seu nome.');
+    expect(errorText(fixture, 'speaker-email-error')).toBe('Informe seu email.');
+    expect(errorText(fixture, 'talk-title-error')).toBe(
+      'Informe o título da palestra.'
+    );
+    for (const selector of ['#speaker-name', '#speaker-email', '#talk-title']) {
+      expect(
+        fixture.nativeElement.querySelector(selector).getAttribute('aria-invalid')
+      ).toBe('true');
+    }
+    expect(submit).not.toHaveBeenCalled();
+  });
+
+  it('reveals only the remaining errors when a partly valid form is submitted', async () => {
+    const fixture = TestBed.createComponent(CfpSubmissionComponent);
+    await fixture.whenStable();
+    input(fixture, '#speaker-name', 'Ada Lovelace');
+    input(fixture, '#speaker-email', 'invalido');
+
+    submitForm(fixture);
+
+    expect(fixture.nativeElement.querySelector('#speaker-name-error')).toBeNull();
+    expect(
+      fixture.nativeElement.querySelector('#speaker-name').getAttribute('aria-invalid')
+    ).toBeNull();
+    expect(errorText(fixture, 'speaker-email-error')).toBe(
+      'Informe um email válido.'
+    );
+    expect(errorText(fixture, 'talk-title-error')).toBe(
+      'Informe o título da palestra.'
+    );
+    expect(submit).not.toHaveBeenCalled();
+  });
+
   it('associates an invalid field error with its control', async () => {
     const fixture = TestBed.createComponent(CfpSubmissionComponent);
     await fixture.whenStable();

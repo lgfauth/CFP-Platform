@@ -94,7 +94,14 @@ export class CfpSubmissionComponent {
   }
 
   submit(): void {
-    if (!this.canSubmit()) {
+    if (!this.isValid()) {
+      // An invalid submission (e.g. Enter in a field) reveals every error,
+      // including fields the user has not visited yet.
+      this.touched.set({ name: true, email: true, talkTitle: true });
+      return;
+    }
+
+    if (this.isSubmitting()) {
       return;
     }
 
